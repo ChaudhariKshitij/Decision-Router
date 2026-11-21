@@ -1,0 +1,71 @@
+{
+  "experiment_id": "train-20261006T000710-33c450",
+  "timestamp": "2026-10-06T00:07:10.864617+00:00",
+  "kind": "train",
+  "random_seed": 42,
+  "dataset_version": "c240c8e0d354",
+  "model_versions": {
+    "fast": "fast-c240c8e0-s42",
+    "accurate": "accurate-c240c8e0-s42",
+    "deep": "deep-c240c8e0-s42"
+  },
+  "routing_policy": null,
+  "thresholds": {
+    "routing": {
+      "confidence": {
+        "fast_threshold": 0.85,
+        "accurate_threshold": 0.9
+      },
+      "risk_aware": {
+        "fast_confidence": 0.9,
+        "entropy_threshold": 0.45,
+        "escalate_entropy": 0.8,
+        "escalate_disagreement": 0.3,
+        "escalate_risk": 0.8,
+        "heuristic_risk_max": 0.45
+      }
+    },
+    "safety": {
+      "high_risk": 0.82,
+      "high_disagreement": 0.38,
+      "high_entropy": null
+    },
+    "abstention": {
+      "min_margin": 0.08,
+      "review_disagreement": 0.5
+    }
+  },
+  "cost_proxy": {
+    "fast": 1,
+    "accurate": 3,
+    "deep": 8
+  },
+  "latency_proxy_ms": {
+    "fast": 2,
+    "accurate": 8,
+    "deep": 20
+  },
+  "metrics": {
+    "fast": {
+      "pr_auc": 0.5943681732896932,
+      "roc_auc": 0.9149381145827958,
+      "recall": 0.4478114478114478,
+      "precision": 0.6551724137931034,
+      "brier": 0.036380496399894074
+    },
+    "accurate": {
+      "pr_auc": 0.6327769095337685,
+      "roc_auc": 0.9094782303754101,
+      "recall": 0.5757575757575758,
+      "precision": 0.6428571428571429,
+      "brier": 0.03426666561706309
+    },
+    "deep": {
+      "pr_auc": 0.6171345720754765,
+      "roc_auc": 0.9214724788786525,
+      "recall": 0.5185185185185185,
+      "precision": 0.6695652173913044,
+      "brier": 0.035080711604313135
+    }
+  }
+}

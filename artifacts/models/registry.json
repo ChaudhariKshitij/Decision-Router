@@ -1,0 +1,48 @@
+{
+  "data_version": "c240c8e0d354",
+  "seed": 42,
+  "train_seconds": 1.5420455932617188,
+  "rows": {
+    "rows": 24000,
+    "fraud_rate": 0.061875,
+    "sha256_12": "c240c8e0d354",
+    "train_rows": 14400,
+    "val_rows": 4800,
+    "test_rows": 4800,
+    "train_fraud_rate": 0.061875,
+    "val_fraud_rate": 0.061875,
+    "test_fraud_rate": 0.061875
+  },
+  "fraud_threshold": 0.37369791413086406,
+  "model_versions": {
+    "fast": "fast-c240c8e0-s42",
+    "accurate": "accurate-c240c8e0-s42",
+    "deep": "deep-c240c8e0-s42"
+  },
+  "feature_columns": [
+    "amount",
+    "hour",
+    "account_age_days",
+    "device_seen_before",
+    "merchant_seen_before",
+    "transactions_24h",
+    "avg_amount_30d",
+    "distance_from_home_km",
+    "international",
+    "merchant_risk",
+    "velocity_score",
+    "amount_deviation",
+    "log_amount",
+    "log_avg_amount",
+    "amount_ratio",
+    "hour_sin",
+    "hour_cos",
+    "is_night",
+    "log_distance",
+    "log_tx24h",
+    "log_age",
+    "new_account"
+  ],
+  "sklearn": "1.8.0",
+  "python": "3.12.3"
+}

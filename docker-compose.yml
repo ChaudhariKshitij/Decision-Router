@@ -1,0 +1,18 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    env_file: [.env.example]          # copy to .env and set TYPESAFE_API_KEY to enable Jev
+    environment:
+      - JEV_ENABLED=${JEV_ENABLED:-false}
+      - TYPESAFE_API_KEY=${TYPESAFE_API_KEY:-}
+    volumes: ["artifacts:/app/artifacts", "data:/app/data"]
+  dashboard:                          # never receives the API key
+    build: .
+    depends_on: [api]
+    ports: ["8501:8501"]
+    volumes: ["artifacts:/app/artifacts", "data:/app/data"]
+    command: ["streamlit", "run", "app/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+volumes:
+  artifacts:
+  data:

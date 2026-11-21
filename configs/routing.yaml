@@ -1,0 +1,44 @@
+# DecisionRouter Pro -- all tunable numbers live here (no magic numbers in code).
+seed: 42
+
+data:
+  n_samples: 24000
+  target_fraud_rate: 0.06      # approximate; intercept is solved on a fixed reference sample
+  label_noise: 0.003           # fraction of labels flipped (irreducible noise)
+  splits: {train: 0.60, val: 0.20, test: 0.20}
+
+decision:
+  fraud_threshold: null        # null => F1-optimal on VALIDATION for the ACCURATE model (stored at train time)
+
+# Proxy values. NOT cloud prices, NOT production latencies.
+cost:       {fast: 1, accurate: 3, deep: 8}
+latency_ms: {fast: 2, accurate: 8, deep: 20}
+
+routing:
+  confidence:                  # Policy D (cascade): confidence = max(p, 1-p)
+    fast_threshold: 0.85         # chosen from the VALIDATION sweep: cheapest threshold within 1% of best val PR-AUC
+    accurate_threshold: 0.90
+  risk_aware:                  # Policy E
+    fast_confidence: 0.90
+    entropy_threshold: 0.45    # bits; FAST path requires H(p_fast) <= this
+    escalate_entropy: 0.80     # bits; entropy of mean(p_fast, p_accurate) at/above this => DEEP
+    escalate_disagreement: 0.30  # |p_fast - p_accurate| at/above this => DEEP
+    escalate_risk: 0.80          # max(p_fast, p_accurate) at/above this => DEEP
+    heuristic_risk_max: 0.45   # cascade variant: cheap rule-based risk allowed on the FAST path
+
+safety:                        # deterministic, final authority over every policy
+  high_risk: 0.82
+  high_disagreement: 0.38
+  high_entropy: null           # optional third rule (bits); null disables
+
+abstention:                    # REVIEW outcome
+  min_margin: 0.08             # |p_final - fraud_threshold| below this => REVIEW
+  review_disagreement: 0.50    # disagreement above this even after escalation => REVIEW
+
+experiments:
+  threshold_sweep: [0.80, 0.85, 0.88, 0.90, 0.92, 0.94, 0.95, 0.96, 0.97, 0.98, 0.99, 0.995]
+  latency_iterations: 300
+  jev_benchmark_sample: 300    # rows sent to Jev if enabled (API calls cost money/time)
+
+jev:
+  timeout_s: 5.0

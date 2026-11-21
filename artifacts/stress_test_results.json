@@ -1,0 +1,264 @@
+{
+  "population_means_test": {
+    "mean_disagreement": 0.03280458707531866,
+    "mean_entropy_fast": 0.18248726576424923,
+    "mean_risk": 0.07568938802718603
+  },
+  "scenarios": [
+    {
+      "scenario": "high_amount_new_device",
+      "transaction": {
+        "amount": 2500,
+        "hour": 14,
+        "account_age_days": 400,
+        "device_seen_before": 0,
+        "merchant_seen_before": 1,
+        "transactions_24h": 2,
+        "avg_amount_30d": 110,
+        "distance_from_home_km": 20,
+        "international": 0
+      },
+      "probabilities": {
+        "fast": 0.9957,
+        "accurate": null,
+        "deep": 0.9841
+      },
+      "disagreement": 0.0116,
+      "entropy": 0.0813,
+      "risk_score": 0.9957,
+      "initial_model": "fast",
+      "selected_model": "deep",
+      "safety_override": "high_risk",
+      "decision": "FRAUD",
+      "estimated_cost": 9.0,
+      "models_run": [
+        "fast",
+        "deep"
+      ]
+    },
+    {
+      "scenario": "high_amount_new_account",
+      "transaction": {
+        "amount": 1800,
+        "hour": 15,
+        "account_age_days": 12,
+        "device_seen_before": 1,
+        "merchant_seen_before": 1,
+        "transactions_24h": 1,
+        "avg_amount_30d": 90,
+        "distance_from_home_km": 10,
+        "international": 0
+      },
+      "probabilities": {
+        "fast": 0.9542,
+        "accurate": null,
+        "deep": 0.9909
+      },
+      "disagreement": 0.0367,
+      "entropy": 0.1814,
+      "risk_score": 0.9909,
+      "initial_model": "fast",
+      "selected_model": "deep",
+      "safety_override": "high_risk",
+      "decision": "FRAUD",
+      "estimated_cost": 9.0,
+      "models_run": [
+        "fast",
+        "deep"
+      ]
+    },
+    {
+      "scenario": "international_unusual_hour",
+      "transaction": {
+        "amount": 420,
+        "hour": 3,
+        "account_age_days": 700,
+        "device_seen_before": 0,
+        "merchant_seen_before": 0,
+        "transactions_24h": 2,
+        "avg_amount_30d": 120,
+        "distance_from_home_km": 4200,
+        "international": 1
+      },
+      "probabilities": {
+        "fast": 1.0,
+        "accurate": 0.9054,
+        "deep": 0.9999
+      },
+      "disagreement": 0.0945,
+      "entropy": 0.2022,
+      "risk_score": 1.0,
+      "initial_model": "deep",
+      "selected_model": "deep",
+      "safety_override": null,
+      "decision": "FRAUD",
+      "estimated_cost": 12.0,
+      "models_run": [
+        "fast",
+        "accurate",
+        "deep"
+      ]
+    },
+    {
+      "scenario": "high_velocity_new_merchant",
+      "transaction": {
+        "amount": 160,
+        "hour": 19,
+        "account_age_days": 300,
+        "device_seen_before": 1,
+        "merchant_seen_before": 0,
+        "transactions_24h": 12,
+        "avg_amount_30d": 100,
+        "distance_from_home_km": 15,
+        "international": 0
+      },
+      "probabilities": {
+        "fast": 0.9639,
+        "accurate": null,
+        "deep": 0.9431
+      },
+      "disagreement": 0.0208,
+      "entropy": 0.2713,
+      "risk_score": 0.9639,
+      "initial_model": "fast",
+      "selected_model": "deep",
+      "safety_override": "high_risk",
+      "decision": "FRAUD",
+      "estimated_cost": 9.0,
+      "models_run": [
+        "fast",
+        "deep"
+      ]
+    },
+    {
+      "scenario": "benign_control",
+      "transaction": {
+        "amount": 65,
+        "hour": 13,
+        "account_age_days": 900,
+        "device_seen_before": 1,
+        "merchant_seen_before": 1,
+        "transactions_24h": 1,
+        "avg_amount_30d": 70,
+        "distance_from_home_km": 8,
+        "international": 0
+      },
+      "probabilities": {
+        "fast": 0.0033,
+        "accurate": null,
+        "deep": null
+      },
+      "disagreement": 0.0,
+      "entropy": 0.0315,
+      "risk_score": 0.0033,
+      "initial_model": "fast",
+      "selected_model": "fast",
+      "safety_override": null,
+      "decision": "LEGIT",
+      "estimated_cost": 1.0,
+      "models_run": [
+        "fast"
+      ]
+    },
+    {
+      "scenario": "conflict_case_1",
+      "transaction": {
+        "amount": 57.33,
+        "hour": 20,
+        "account_age_days": 595,
+        "device_seen_before": 1,
+        "merchant_seen_before": 1,
+        "transactions_24h": 1,
+        "avg_amount_30d": 153.0,
+        "distance_from_home_km": 7427.2,
+        "international": 0
+      },
+      "probabilities": {
+        "fast": 0.9317,
+        "accurate": null,
+        "deep": 0.0018
+      },
+      "disagreement": 0.9299,
+      "entropy": 0.9968,
+      "risk_score": 0.9317,
+      "initial_model": "fast",
+      "selected_model": "deep",
+      "safety_override": "high_risk",
+      "decision": "REVIEW",
+      "estimated_cost": 9.0,
+      "models_run": [
+        "fast",
+        "deep"
+      ]
+    },
+    {
+      "scenario": "conflict_case_2",
+      "transaction": {
+        "amount": 796.96,
+        "hour": 10,
+        "account_age_days": 4,
+        "device_seen_before": 1,
+        "merchant_seen_before": 1,
+        "transactions_24h": 3,
+        "avg_amount_30d": 267.85,
+        "distance_from_home_km": 9.3,
+        "international": 0
+      },
+      "probabilities": {
+        "fast": 0.0756,
+        "accurate": null,
+        "deep": null
+      },
+      "disagreement": 0.0,
+      "entropy": 0.3865,
+      "risk_score": 0.0756,
+      "initial_model": "fast",
+      "selected_model": "fast",
+      "safety_override": null,
+      "decision": "LEGIT",
+      "estimated_cost": 1.0,
+      "models_run": [
+        "fast"
+      ]
+    },
+    {
+      "scenario": "conflict_case_3",
+      "transaction": {
+        "amount": 67.71,
+        "hour": 6,
+        "account_age_days": 10,
+        "device_seen_before": 0,
+        "merchant_seen_before": 1,
+        "transactions_24h": 1,
+        "avg_amount_30d": 55.03,
+        "distance_from_home_km": 57.5,
+        "international": 1
+      },
+      "probabilities": {
+        "fast": 0.812,
+        "accurate": 0.132,
+        "deep": 0.1979
+      },
+      "disagreement": 0.68,
+      "entropy": 0.9585,
+      "risk_score": 0.812,
+      "initial_model": "deep",
+      "selected_model": "deep",
+      "safety_override": null,
+      "decision": "REVIEW",
+      "estimated_cost": 12.0,
+      "models_run": [
+        "fast",
+        "accurate",
+        "deep"
+      ]
+    }
+  ],
+  "checks": {
+    "mean_deep_selected_adversarial": 0.8571428571428571,
+    "benign_control_selected": "fast",
+    "adversarial_mean_disagreement_vs_population": 0.22055255578182417,
+    "safety_overrides_triggered": 4
+  },
+  "note": "Disagreement/entropy are over the tiers that actually ran; FAST-only decisions have 0 observed disagreement by construction."
+}

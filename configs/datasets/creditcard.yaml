@@ -1,0 +1,17 @@
+# ULB / Worldline "Credit Card Fraud Detection" (284,807 European card transactions over 2 days, 492 frauds = 0.17%).
+# Source: Kaggle "mlg-ulb/creditcardfraud" or OpenML data id 1597. Features V1-V28 are PCA components (anonymised).
+name: creditcard
+source_file: creditcard.csv
+target: Class
+numeric: [V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, Amount]
+categorical: []
+log1p: [Amount]
+hour_from_seconds: Time      # Time = seconds since the first transaction; used only as hour-of-day
+time_column: Time
+split: temporal              # first 60% train / next 20% validation / last 20% test (use --split stratified to override)
+split_fracs: {train: 0.6, val: 0.2, test: 0.2}
+# slices are pandas query expressions over the RAW columns
+slices:
+  "high_amount (>200)": "Amount > 200"
+  "micro_amount (<1)": "Amount < 1"
+  "night (00-06h)": "(Time % 86400) < 21600"

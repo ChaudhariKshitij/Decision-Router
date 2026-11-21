@@ -1,0 +1,2 @@
+# Optional: only needed when JEV_ENABLED=true
+typesafe-sdk>=0.6

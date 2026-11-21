@@ -1,0 +1,44 @@
+# Starting config for the ULB credit-card dataset (0.17% fraud). Select with:  DR_CONFIG=configs/creditcard.yaml
+# At ~0.2% prevalence calibrated probabilities are tiny, so max(p, 1-p) is ~0.999 for almost everyone. For p < 0.5 the
+# confidence 1-p is just a monotone transform of p, so the useful thresholds are FINE-GRAINED values near 1 (0.99-0.9999).
+# These numbers are a STARTING POINT, not tuned: run benchmark.py, read the validation sweep (artifacts/threshold_sweep.csv),
+# pick the cheapest threshold within 1% of best validation PR-AUC, and edit them here.
+seed: 42
+
+data:
+  dataset: creditcard
+
+decision:
+  fraud_threshold: null        # F1-optimal on VALIDATION for ACCURATE
+
+cost:       {fast: 1, accurate: 3, deep: 8}
+latency_ms: {fast: 2, accurate: 8, deep: 20}
+
+routing:
+  confidence:
+    fast_threshold: 0.999
+    accurate_threshold: 0.995
+  risk_aware:
+    fast_confidence: 0.999
+    entropy_threshold: 0.02     # bits; H(0.001) ~ 0.011, H(0.002) ~ 0.021
+    escalate_entropy: 0.30      # bits, entropy of mean(p_fast, p_accurate); ~ p of 0.05
+    escalate_disagreement: 0.30
+    escalate_risk: 0.80
+    heuristic_risk_max: 0.45    # inert here: no rule-based flags exist for anonymised features
+
+safety:
+  high_risk: 0.82
+  high_disagreement: 0.38
+  high_entropy: null
+
+abstention:
+  min_margin: 0.05
+  review_disagreement: 0.50
+
+experiments:
+  threshold_sweep: [0.99, 0.995, 0.998, 0.999, 0.9995, 0.9998, 0.9999]
+  latency_iterations: 300
+  jev_benchmark_sample: 300
+
+jev:
+  timeout_s: 5.0

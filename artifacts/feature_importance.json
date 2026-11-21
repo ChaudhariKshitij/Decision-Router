@@ -1,0 +1,138 @@
+{
+  "permutation_importance_accurate_val_pr_auc": [
+    {
+      "feature": "transactions_24h",
+      "importance": 0.21190313016042742,
+      "std": 0.0026962579721662963
+    },
+    {
+      "feature": "velocity_score",
+      "importance": 0.1034580670338543,
+      "std": 0.004989453793449298
+    },
+    {
+      "feature": "international",
+      "importance": 0.0884400624987786,
+      "std": 0.001838630958952071
+    },
+    {
+      "feature": "amount_deviation",
+      "importance": 0.08590956335572238,
+      "std": 0.0027911585697624666
+    },
+    {
+      "feature": "hour",
+      "importance": 0.0629711553140428,
+      "std": 0.0014104187155786424
+    },
+    {
+      "feature": "distance_from_home_km",
+      "importance": 0.05693086745420295,
+      "std": 0.006638441758840942
+    },
+    {
+      "feature": "device_seen_before",
+      "importance": 0.05231973280643931,
+      "std": 0.00413196413913997
+    },
+    {
+      "feature": "merchant_seen_before",
+      "importance": 0.027936492342186463,
+      "std": 0.0032442591043667186
+    },
+    {
+      "feature": "merchant_risk",
+      "importance": 0.024943618656903865,
+      "std": 0.0016677783616718483
+    },
+    {
+      "feature": "amount_ratio",
+      "importance": 0.02396853104175593,
+      "std": 0.005358278634846806
+    },
+    {
+      "feature": "amount",
+      "importance": 0.006600656605471526,
+      "std": 0.0031917046843166355
+    },
+    {
+      "feature": "hour_sin",
+      "importance": 0.00613376125325608,
+      "std": 0.004021493999116449
+    },
+    {
+      "feature": "is_night",
+      "importance": 0.005123349540184896,
+      "std": 0.002719747614781412
+    },
+    {
+      "feature": "hour_cos",
+      "importance": 0.0016722618165736503,
+      "std": 0.00025285028949223454
+    },
+    {
+      "feature": "log_amount",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "log_avg_amount",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "log_distance",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "log_tx24h",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "log_age",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "new_account",
+      "importance": 0.0,
+      "std": 0.0
+    },
+    {
+      "feature": "account_age_days",
+      "importance": -0.0003503269746284084,
+      "std": 0.0024887087243896243
+    },
+    {
+      "feature": "avg_amount_30d",
+      "importance": -0.005769885448035805,
+      "std": 0.004476626426552229
+    }
+  ],
+  "fast_logistic_coefficients_standardised": {
+    "amount": 0.059240725286627494,
+    "hour": -0.22876122061148246,
+    "account_age_days": 0.03660425665125783,
+    "device_seen_before": -0.5364693823453696,
+    "merchant_seen_before": -0.4573881206987623,
+    "transactions_24h": 1.756415246050197,
+    "avg_amount_30d": -0.08754024536335564,
+    "distance_from_home_km": 0.1593447187002393,
+    "international": 0.6878474397263777,
+    "merchant_risk": 0.258559662421847,
+    "velocity_score": -0.36825274778364736,
+    "amount_deviation": 0.14923435830918505,
+    "log_amount": 0.7382111172144599,
+    "log_avg_amount": -0.5078627426512414,
+    "amount_ratio": 0.15907177388244656,
+    "hour_sin": 0.07092345398197186,
+    "hour_cos": 0.19379546615868926,
+    "is_night": 0.274261449050411,
+    "log_distance": 0.056612642648285964,
+    "log_tx24h": -0.6842585290552154,
+    "log_age": 0.026045023609352763,
+    "new_account": 0.26831978763851044
+  }
+}

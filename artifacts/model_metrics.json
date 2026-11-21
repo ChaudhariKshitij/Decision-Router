@@ -1,0 +1,125 @@
+{
+  "fast": {
+    "roc_auc": 0.9149381145827958,
+    "pr_auc": 0.5943681732896932,
+    "accuracy": 0.95125,
+    "precision": 0.6551724137931034,
+    "recall": 0.4478114478114478,
+    "f1": 0.532,
+    "brier": 0.036380496399894074,
+    "log_loss": 0.13486969779335642,
+    "tp": 133,
+    "fp": 70,
+    "tn": 4433,
+    "fn": 164,
+    "threshold": 0.37369791413086406,
+    "ece_calibrated": 0.007517391311440267,
+    "ece_raw": 0.1948634173532559,
+    "brier_raw": 0.0996407689940899,
+    "calibration_chosen": "sigmoid",
+    "calibration_cv_brier_on_val": {
+      "none": 0.10218494785839802,
+      "sigmoid": 0.03383912150961195,
+      "isotonic": 0.03449210887923877
+    },
+    "model_size_kb": 3.2,
+    "latency_measured": {
+      "mean_ms": 0.7395137766722352,
+      "p50_ms": 0.6943999999862172,
+      "p95_ms": 0.9341030500195303,
+      "p99_ms": 1.45239899005105
+    },
+    "cost_proxy": 1.0,
+    "latency_proxy_ms": 2.0,
+    "version": "fast-c240c8e0-s42"
+  },
+  "accurate": {
+    "roc_auc": 0.9094782303754101,
+    "pr_auc": 0.6327769095337685,
+    "accuracy": 0.9539583333333334,
+    "precision": 0.6428571428571429,
+    "recall": 0.5757575757575758,
+    "f1": 0.6074600355239786,
+    "brier": 0.03426666561706309,
+    "log_loss": 0.1305196542459741,
+    "tp": 171,
+    "fp": 95,
+    "tn": 4408,
+    "fn": 126,
+    "threshold": 0.37369791413086406,
+    "ece_calibrated": 0.005535661912267325,
+    "ece_raw": 0.006407522740660932,
+    "brier_raw": 0.03437866429152399,
+    "calibration_chosen": "sigmoid",
+    "calibration_cv_brier_on_val": {
+      "none": 0.03277290803702717,
+      "sigmoid": 0.032716657556159184,
+      "isotonic": 0.032913670074714255
+    },
+    "model_size_kb": 315.1,
+    "latency_measured": {
+      "mean_ms": 1.6520003033360808,
+      "p50_ms": 1.3969139999971958,
+      "p95_ms": 2.5483244000270138,
+      "p99_ms": 3.827197549998114
+    },
+    "cost_proxy": 3.0,
+    "latency_proxy_ms": 8.0,
+    "version": "accurate-c240c8e0-s42"
+  },
+  "deep": {
+    "roc_auc": 0.9214724788786525,
+    "pr_auc": 0.6171345720754765,
+    "accuracy": 0.954375,
+    "precision": 0.6695652173913044,
+    "recall": 0.5185185185185185,
+    "f1": 0.5844402277039848,
+    "brier": 0.035080711604313135,
+    "log_loss": 0.12989562887931685,
+    "tp": 154,
+    "fp": 76,
+    "tn": 4427,
+    "fn": 143,
+    "threshold": 0.37369791413086406,
+    "ece_calibrated": 0.006339415709120745,
+    "ece_raw": 0.005412534746792678,
+    "brier_raw": 0.03511269251778997,
+    "calibration_chosen": "sigmoid",
+    "calibration_cv_brier_on_val": {
+      "none": 0.032084705809058534,
+      "sigmoid": 0.031632345195570295,
+      "isotonic": 0.032485911172094664
+    },
+    "model_size_kb": 95.0,
+    "latency_measured": {
+      "mean_ms": 0.9648806066699459,
+      "p50_ms": 0.8249780000255669,
+      "p95_ms": 1.6024059000415036,
+      "p99_ms": 1.7976383900156634
+    },
+    "cost_proxy": 8.0,
+    "latency_proxy_ms": 20.0,
+    "version": "deep-c240c8e0-s42"
+  },
+  "_meta": {
+    "fraud_threshold": 0.37369791413086406,
+    "threshold_source": "F1-optimal on VALIDATION for ACCURATE (calibrated)",
+    "test_rows": 4800,
+    "test_fraud_rate": 0.061875,
+    "dataset": {
+      "rows": 24000,
+      "fraud_rate": 0.061875,
+      "sha256_12": "c240c8e0d354",
+      "train_rows": 14400,
+      "val_rows": 4800,
+      "test_rows": 4800,
+      "train_fraud_rate": 0.061875,
+      "val_fraud_rate": 0.061875,
+      "test_fraud_rate": 0.061875
+    },
+    "seed": 42,
+    "train_seconds": 1.5420455932617188,
+    "quick": false,
+    "notes": "Latency is measured single-row wall-clock on this host; cost/latency proxies are config values."
+  }
+}

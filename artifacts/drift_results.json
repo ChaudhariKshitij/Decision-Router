@@ -1,0 +1,42 @@
+{
+  "baseline_fresh_sample": {
+    "d_mean_disagreement": 0.0,
+    "d_fast_pr_auc": 0.0,
+    "d_accurate_pr_auc": 0.0,
+    "d_deep_pr_auc": 0.0,
+    "d_risk_aware_deep_pct": 0.0,
+    "d_risk_aware_cost": 0.0
+  },
+  "amount_scale_x1.3": {
+    "d_mean_disagreement": -0.000327003024247631,
+    "d_fast_pr_auc": 0.016278412413610055,
+    "d_accurate_pr_auc": 0.020939210910670747,
+    "d_deep_pr_auc": 0.019966286446426507,
+    "d_risk_aware_deep_pct": -0.28499999999999925,
+    "d_risk_aware_cost": -0.026399999999999757
+  },
+  "intl_volume_x3": {
+    "d_mean_disagreement": 0.015659864664884976,
+    "d_fast_pr_auc": 0.023406331683863413,
+    "d_accurate_pr_auc": 0.021280710023116378,
+    "d_deep_pr_auc": 0.013116903254131285,
+    "d_risk_aware_deep_pct": 5.545000000000001,
+    "d_risk_aware_cost": 0.6860000000000004
+  },
+  "intl_fraud_mechanism_x2": {
+    "d_mean_disagreement": 1.7205943517922817e-05,
+    "d_fast_pr_auc": 0.05867165090408244,
+    "d_accurate_pr_auc": 0.05077759509042168,
+    "d_deep_pr_auc": 0.034164214343512245,
+    "d_risk_aware_deep_pct": -0.16499999999999915,
+    "d_risk_aware_cost": -0.011699999999999822
+  },
+  "combined": {
+    "d_mean_disagreement": 0.019125450680499693,
+    "d_fast_pr_auc": 0.12048232764738687,
+    "d_accurate_pr_auc": 0.10460498555786091,
+    "d_deep_pr_auc": 0.08234479405712658,
+    "d_risk_aware_deep_pct": 6.075,
+    "d_risk_aware_cost": 0.7680000000000002
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "auc_full_disagreement_predicting_fast_error": 0.875845622231956,
+  "auc_full_disagreement_predicting_accurate_error": 0.8666596176327304,
+  "auc_fast_accurate_gap_predicting_fast_error": 0.8549413914065689,
+  "auc_fast_entropy_predicting_fast_error": 0.88399672795205,
+  "auc_fast_1_minus_conf_predicting_fast_error": 0.88399672795205,
+  "spearman_disagreement_vs_accurate_error": 0.26619134760812707,
+  "error_rate_by_disagreement_quintile": [
+    {
+      "q": "(-0.0009811, 0.00257]",
+      "err_fast": 0.005208333333333333,
+      "err_accurate": 0.005208333333333333,
+      "fraud": 0.005208333333333333
+    },
+    {
+      "q": "(0.00257, 0.00485]",
+      "err_fast": 0.00625,
+      "err_accurate": 0.00625,
+      "fraud": 0.00625
+    },
+    {
+      "q": "(0.00485, 0.00931]",
+      "err_fast": 0.013541666666666667,
+      "err_accurate": 0.013541666666666667,
+      "fraud": 0.013541666666666667
+    },
+    {
+      "q": "(0.00931, 0.0307]",
+      "err_fast": 0.025,
+      "err_accurate": 0.025,
+      "fraud": 0.027083333333333334
+    },
+    {
+      "q": "(0.0307, 0.906]",
+      "err_fast": 0.19375,
+      "err_accurate": 0.18020833333333333,
+      "fraud": 0.25729166666666664
+    }
+  ],
+  "note": "AUC 0.5 = no signal. Errors are w.r.t. the fixed F1-optimal threshold; fraud is rare so errors concentrate in positives."
+}

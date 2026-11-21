@@ -1,0 +1,13 @@
+{
+  "review_rate_pct": 2.1875,
+  "coverage_pct": 97.8125,
+  "error_rate_all": 0.044583333333333336,
+  "error_rate_on_non_review": 0.03727369542066028,
+  "error_rate_on_review_rows": 0.37142857142857144,
+  "fraud_rate_in_review": 0.5047619047619047,
+  "fraud_rate_in_non_review": 0.05197018104366347,
+  "fraud_missed_all": 144,
+  "fraud_missed_non_review": 125,
+  "fraud_total": 297,
+  "fraud_sent_to_review": 53
+}

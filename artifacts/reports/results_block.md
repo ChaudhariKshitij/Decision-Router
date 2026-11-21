@@ -1,0 +1,109 @@
+### Setup
+Synthetic data, seed 42: 24,000 rows, fraud rate 6.188%; test split 4,800 rows / 297 frauds. Fraud threshold 0.374 (F1-optimal on validation for the ACCURATE tier). Cost/latency are proxies from `configs/routing.yaml`. Jev router: **not evaluated** (no API key at report time).
+
+### Model quality (test)
+| model | pr_auc | roc_auc | recall | precision | f1 | accuracy | brier | log_loss | ece_raw | ece_calibrated | calibration |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| fast | 0.5944 | 0.9149 | 0.4478 | 0.6552 | 0.5320 | 0.9513 | 0.0364 | 0.1349 | 0.1949 | 0.0075 | sigmoid |
+| accurate | 0.6328 | 0.9095 | 0.5758 | 0.6429 | 0.6075 | 0.9540 | 0.0343 | 0.1305 | 0.0064 | 0.0055 | sigmoid |
+| deep | 0.6171 | 0.9215 | 0.5185 | 0.6696 | 0.5844 | 0.9544 | 0.0351 | 0.1299 | 0.0054 | 0.0063 | sigmoid |
+
+### Latency & cost per model
+| model | measured p50 ms | p95 ms | p99 ms | proxy ms | cost proxy | size KB |
+|---|---|---|---|---|---|---|
+| fast | 0.694 | 0.934 | 1.452 | 2.000 | 1.000 | 3.200 |
+| accurate | 1.397 | 2.548 | 3.827 | 8.000 | 3.000 | 315.100 |
+| deep | 0.825 | 1.602 | 1.798 | 20.000 | 8.000 | 95.000 |
+
+Measured latency is single-row wall-clock `predict_proba` on the generating host (including Python overhead); it is host-dependent and does not preserve the 1:3:8 proxy ratios.
+
+### Routing benchmark (test; cost = cascade cost incl. every tier run)
+| policy | pr_auc | roc_auc | recall | precision | f1 | brier | avg_cost_incurred | avg_latency_ms_proxy | p95_latency_ms_proxy | fast_pct | accurate_pct | deep_pct | safety_override_pct | review_rate_pct | cost_savings_vs_deep_pct | latency_reduction_vs_deep_pct | pr_auc_retention_vs_deep | on_pareto |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| always_fast | 0.594 | 0.915 | 0.448 | 0.655 | 0.532 | 0.036 | 1.000 | 2.000 | 2.000 | 100.000 | 0.000 | 0.000 | 0.000 | 1.958 | 87.500 | 90.000 | 0.963 | True |
+| always_accurate | 0.633 | 0.909 | 0.576 | 0.643 | 0.607 | 0.034 | 3.000 | 8.000 | 8.000 | 0.000 | 100.000 | 0.000 | 0.000 | 2.188 | 62.500 | 60.000 | 1.025 | True |
+| always_deep | 0.617 | 0.921 | 0.519 | 0.670 | 0.584 | 0.035 | 8.000 | 20.000 | 20.000 | 0.000 | 0.000 | 100.000 | 0.000 | 2.146 | 0.000 | 0.000 | 1.000 | False |
+| confidence_router | 0.616 | 0.917 | 0.515 | 0.677 | 0.585 | 0.035 | 1.938 | 4.387 | 30.000 | 90.479 | 0.979 | 8.542 | 1.229 | 2.146 | 75.779 | 78.067 | 0.998 | False |
+| risk_aware_router | 0.617 | 0.916 | 0.515 | 0.686 | 0.588 | 0.035 | 1.933 | 4.393 | 30.000 | 87.146 | 5.771 | 7.083 | 0.646 | 2.188 | 75.839 | 78.033 | 1.000 | False |
+| confidence_router_no_safety | 0.618 | 0.917 | 0.519 | 0.675 | 0.587 | 0.035 | 1.839 | 4.141 | 30.000 | 91.521 | 1.167 | 7.312 | 0.000 | 2.062 | 77.008 | 79.296 | 1.001 | True |
+| risk_aware_router_no_safety | 0.615 | 0.916 | 0.515 | 0.683 | 0.587 | 0.035 | 1.881 | 4.264 | 30.000 | 87.792 | 5.771 | 6.438 | 0.000 | 2.146 | 76.484 | 78.679 | 0.997 | False |
+
+Pareto-optimal (cost vs PR-AUC) among these rows: **always_fast, always_accurate, confidence_router_no_safety**.
+
+### Paired bootstrap (B=400, test rows resampled jointly)
+| comparison | ΔPR-AUC | 95% CI | Δrecall | recall 95% CI |
+|---|---|---|---|---|
+| risk_aware_router - always_deep | 0.001 | [-0.009, +0.013] | -0.003 | [-0.011, +0.000] |
+| risk_aware_router - always_accurate | -0.015 | [-0.043, +0.009] | -0.059 | [-0.098, -0.017] |
+| risk_aware_router - always_fast | 0.023 | [+0.000, +0.049] | 0.068 | [+0.030, +0.106] |
+| confidence_router - always_fast | 0.023 | [+0.000, +0.047] | 0.069 | [+0.031, +0.105] |
+| confidence_router - always_deep | -0.001 | [-0.012, +0.009] | -0.004 | [-0.011, +0.000] |
+| always_accurate - always_deep | 0.014 | [-0.009, +0.040] | 0.058 | [+0.019, +0.096] |
+
+### Threshold choice (validation sweep, cheapest threshold within 1% of best validation PR-AUC)
+confidence: fast-confidence 0.85 (cost 1.94, val PR-AUC 0.684), risk_aware: fast-confidence 0.8 (cost 1.97, val PR-AUC 0.689). Configured values: confidence 0.85, risk-aware 0.9.
+
+### Slice analysis (risk-aware router, test)
+| slice | n | fraud_rate | fast_pct | accurate_pct | deep_pct | false_negative_rate | avg_cost | safety_override_pct | review_pct |
+|---|---|---|---|---|---|---|---|---|---|
+| all | 4800 | 0.062 | 87.146 | 5.771 | 7.083 | 0.485 | 1.933 | 0.646 | 2.188 |
+| high_amount (>1000) | 58 | 0.172 | 46.552 | 20.690 | 32.759 | 0.400 | 4.966 | 8.621 | 5.172 |
+| new_device | 388 | 0.206 | 56.959 | 20.361 | 22.680 | 0.388 | 4.090 | 0.515 | 6.701 |
+| new_merchant | 970 | 0.107 | 78.866 | 9.897 | 11.237 | 0.500 | 2.511 | 0.722 | 4.227 |
+| international | 265 | 0.306 | 13.585 | 32.830 | 53.585 | 0.383 | 7.834 | 1.509 | 21.132 |
+| high_velocity (>=6 tx/24h) | 140 | 0.543 | 17.143 | 13.571 | 69.286 | 0.171 | 8.471 | 18.571 | 7.143 |
+| unusual_hour (<5) | 253 | 0.178 | 60.474 | 17.787 | 21.739 | 0.244 | 3.877 | 1.581 | 5.138 |
+| low_account_age (<60d) | 230 | 0.209 | 63.478 | 15.217 | 21.304 | 0.354 | 3.774 | 0.870 | 6.522 |
+
+### Adversarial scenarios (risk-aware router)
+| scenario | p_fast | p_acc | p_deep | disagreement | initial | final | override | decision |
+|---|---|---|---|---|---|---|---|---|
+| high_amount_new_device | 0.996 | – | 0.984 | 0.012 | fast | deep | high_risk | FRAUD |
+| high_amount_new_account | 0.954 | – | 0.991 | 0.037 | fast | deep | high_risk | FRAUD |
+| international_unusual_hour | 1.000 | 0.905 | 1.000 | 0.095 | deep | deep | – | FRAUD |
+| high_velocity_new_merchant | 0.964 | – | 0.943 | 0.021 | fast | deep | high_risk | FRAUD |
+| benign_control | 0.003 | – | – | 0.000 | fast | fast | – | LEGIT |
+| conflict_case_1 | 0.932 | – | 0.002 | 0.930 | fast | deep | high_risk | REVIEW |
+| conflict_case_2 | 0.076 | – | – | 0.000 | fast | fast | – | LEGIT |
+| conflict_case_3 | 0.812 | 0.132 | 0.198 | 0.680 | deep | deep | – | REVIEW |
+
+Checks: {"mean_deep_selected_adversarial": 0.8571428571428571, "benign_control_selected": "fast", "adversarial_mean_disagreement_vs_population": 0.22055255578182417, "safety_overrides_triggered": 4}
+
+### Distribution shift (frozen models, fresh shifted samples)
+| scenario | fraud_rate | intl_fraud_rate | fast_pr_auc | accurate_pr_auc | deep_pr_auc | mean_disagreement | risk_aware_pr_auc | risk_aware_avg_cost | risk_aware_deep_pct |
+|---|---|---|---|---|---|---|---|---|---|
+| baseline_fresh_sample | 0.066 | 0.304 | 0.649 | 0.661 | 0.676 | 0.036 | 0.675 | 2.005 | 7.740 |
+| amount_scale_x1.3 | 0.063 | 0.332 | 0.666 | 0.682 | 0.696 | 0.035 | 0.698 | 1.978 | 7.455 |
+| intl_volume_x3 | 0.094 | 0.317 | 0.673 | 0.682 | 0.689 | 0.051 | 0.689 | 2.691 | 13.285 |
+| intl_fraud_mechanism_x2 | 0.083 | 0.641 | 0.708 | 0.711 | 0.710 | 0.036 | 0.720 | 1.993 | 7.575 |
+| combined | 0.154 | 0.635 | 0.770 | 0.765 | 0.758 | 0.055 | 0.769 | 2.773 | 13.815 |
+
+### Key findings
+
+**RQ1 – Can adaptive routing cut cost while keeping quality?** Yes, on this synthetic task. The risk-aware router costs 1.93 proxy units per transaction vs 8.00 for Always-Deep (75.8% less, cascade cost counted in full) and keeps 1.000× of Always-Deep PR-AUC. Paired bootstrap ΔPR-AUC vs Always-Deep = +0.001 [-0.009, +0.013] → difference not distinguishable from zero (95% CI spans 0). **Caveat:** Always-Accurate (3 units) has PR-AUC 0.633 vs 0.617 for Always-Deep, i.e. the most expensive tier is *not* the best here, so part of the saving comes from simply not using DEEP. Versus Always-Accurate the router saves 35.6% cost but ΔPR-AUC = -0.015 [-0.043, +0.009] (difference not distinguishable from zero (95% CI spans 0)); recall 0.515 vs 0.576.
+
+**RQ2 – Is disagreement a useful escalation signal?** It carries signal: AUC for predicting FAST-tier errors = 0.876 (3-tier spread) and 0.855 (FAST–ACCURATE gap). But FAST's own entropy/confidence predicts FAST errors about as well (0.884), so disagreement is not shown to be *better* than a cheap single-model uncertainty. Note the full 3-tier spread requires running every tier, so it is only free in offline analysis.
+
+**RQ3 – Does confidence routing beat a fixed model?** Confidence router vs Always-Fast: ΔPR-AUC +0.023 [+0.000, +0.047] (significantly higher), at 1.94 vs 1.00 cost units. Recall 0.515 vs 0.448.
+
+**RQ4 – Does risk-aware routing improve safety?** Risk-aware vs confidence router: fraud caught 153 vs 153 of 297, precision 0.686 vs 0.677, cost 1.93 vs 1.94. Safety-gate ablation: risk-aware with gate caught 153 vs 153 without it (cost 1.93 vs 1.88; confidence router 153 vs 154). The gate fired on 0.65% of transactions; its measured effect on test PR-AUC is +0.0019, i.e. small. Its value here is a hard guarantee (high-risk/high-disagreement always reach DEEP) rather than a large metric gain. On the high-velocity slice the gate fires on 18.6% of transactions.
+
+**RQ5 – Does abstention reduce high-confidence errors?** REVIEW covers 2.19% of transactions and 53 of 297 frauds. Error rate on non-REVIEW rows 0.0373 vs 0.0446 overall; error on REVIEW rows 0.371. Missed frauds fall from 144 to 125 among auto-decided rows (the rest are routed to humans).
+
+**RQ6 – Does Jev add measurable value?** **Not evaluated.** No `TYPESAFE_API_KEY` was available when this report was generated, so the Jev router and shadow comparison were not run and no Jev numbers are reported. The adapter, fallback and shadow logic are covered by tests with a fake client only. Run `scripts/benchmark.py` with `JEV_ENABLED=true` and a key to populate the `jev_router` row.
+
+**RQ7 – Is routing more valuable under shift?** Mixed. Mean disagreement rises from 0.036 (fresh baseline) to 0.055 under the combined shift, and the router's cost rises 2.00 → 2.77 (DEEP share 7.7% → 13.8%), so disagreement does respond to shift. Absolute PR-AUC did not drop below the fresh baseline in any scenario (worst tier delta +0.013; higher fraud prevalence raises PR-AUC), so there was no quality degradation for routing to compensate for; the shifts mainly change cost. See the drift table.
+
+
+**When does routing help?** When most traffic is easy and one cheap model is confident: 87.1% of test traffic is resolved by FAST.
+**When does it hurt?** Cascades pay for every tier they run: a transaction escalated all the way costs 1+3+8 = 12 units, more than Always-Deep (8). Average cost stays low only because escalations are rare.
+**When should the system pay for DEEP?** In the slices where FAST is least reliable: international (54% to DEEP), high velocity (69% to DEEP, 54% fraud rate). Whether DEEP then beats ACCURATE is a separate, unproven question on this data.
+**Does disagreement correlate with errors?** See RQ2: AUC 0.867 against ACCURATE-tier errors, Spearman 0.266.
+
+### Limitations
+- Synthetic data generated by a known process: absolute metrics say nothing about real fraud; the *relative* comparison of policies is the contribution.
+- ~300 test frauds: PR-AUC differences below ~0.03 are within noise (see bootstrap CIs). Thresholds were tuned on validation, evaluated once on test.
+- Cost and latency are proxies; measured latencies are single-row sklearn calls on one host. No batching, GPU, network or queueing effects.
+- Disagreement is a heuristic, not calibrated epistemic uncertainty; the 3-tier spread needs all tiers to run.
+- DEEP is a small sklearn MLP (no dropout), not a large model; it does not outperform ACCURATE on this data.
+- Jev was not evaluated (no credentials in the build environment).
